@@ -9,9 +9,9 @@ var extractPlugin = new ExtractTextPlugin({
 });
 
 module.exports = {
-  entry: [__dirname+'/src/script/main.js'],
+  entry: path.join(__dirname, 'src', 'script', 'main.js'),
   output: {
-    path: __dirname +'/docs',
+    path: path.join(__dirname, 'docs'),
     filename: 'bundle.js'
   },
   plugins: [
@@ -55,6 +55,7 @@ module.exports = {
       	},
         {test: /\.jpg$/, use: 'url-loader?mimetype=image/jpg'},
         {test: /\.png$/, use: 'url-loader?mimetype=image/png'},
+        { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
     ],
   }
 };
