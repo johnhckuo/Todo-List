@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import Input from "./Input";
+
 class List extends Component {
 
   constructor() {
@@ -19,17 +21,31 @@ class List extends Component {
     }
   }
 
+  editList(editText){
+    console.log(this.state.lists);
+    var tempArr = this.state.lists.slice();
+    tempArr.push(editText);
+    this.setState(
+      {
+        lists: tempArr
+      }
+    );
+  }
+
   render() {
     return (
-        <ul lists={this.state.lists}>
-          {
-            this.state.lists.map(
-              function(value, i){
-                return <li key={i}>{this.state.lists[i]}</li>
-              }.bind(this)
-            )
-          }
-        </ul>
+        <div>
+          <Input editList = {this.editList.bind(this)}/>
+          <ul lists={this.state.lists}>
+            {
+              this.state.lists.map(
+                function(value, i){
+                  return <li key={i}>{this.state.lists[i]}</li>
+                }.bind(this)
+              )
+            }
+          </ul>
+        </div>
     );
   }
 }

@@ -13,17 +13,18 @@ class Container extends Component {
       checked:[]
     };
 
-    console.log(this.props);
-    this.setState(
-      {
-        lists: this.props.lists
-      }
-    );
     //this.stats.lists = this.props.listValue;
     // this.stats.checked = this.props.checked;
   }
 
+  componentDidMount() {
+    const { lists } = this.props;
+    this.setState({ lists });
+    console.log(lists)
+  }
+
   editList(editText){
+    console.log(this.stats.lists);
     var tempArr = this.state.lists.slice();
     tempArr.push(editText);
     this.setState(
@@ -36,8 +37,7 @@ class Container extends Component {
   render() {
     return (
       <div id="container">
-        <Input editList = {this.editList.bind(this)}/>
-        <List editedList = { this.state.lists} />
+        <List />
       </div>
     );
   }
