@@ -7,8 +7,7 @@ class Input extends Component {
   constructor() {
     super();
     this.state = {
-      currentTitle: "",
-      currentId: ""
+      newTitle: ""
     };
   }
 
@@ -16,15 +15,13 @@ class Input extends Component {
     const content = event.target.value;
 
     this.setState({
-      currentTitle: event.target.value,
-      currentId: event.target.dataset.id
+      newTitle: event.target.value,
     });
-    console.log(this.state.currentId)
-    //this.props.editList(content);
+
   }
 
   createTodo(){
-    TodoActions.createTodo(this.state.currentTitle);
+    TodoActions.createTodo(this.state.newTitle);
   }
 
   render() {
