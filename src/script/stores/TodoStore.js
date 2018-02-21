@@ -6,14 +6,16 @@ class TodoStore extends EventEmitter{
 		super();
 		this.todos = [
 			{
-				id: 1024,
-				title: "hey",
-				complete: true
+				id: Date.now(),
+				title: "Hello",
+				complete: true,
+				edit: false
 			},
 			{
-				id: 2048,
-				title: "fuck",
-				complete: false
+				id: Date.now(),
+				title: "World",
+				complete: false,
+				edit: false
 			}
 		];
 
@@ -28,7 +30,8 @@ class TodoStore extends EventEmitter{
 		this.todos.push({
 			id,
 			title,
-			complete:false
+			complete:false,
+			edit:false
 		});
 		this.emit("create");
 	}

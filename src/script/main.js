@@ -2,9 +2,9 @@ import dat from 'dat.gui/build/dat.gui.js'
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
-import Container from './components/Container';
+import Todo from './pages/Todo';
 
 ReactDOM.render(
-  <Container/>,
+  <Todo/>,
   document.getElementById('app')
 );
