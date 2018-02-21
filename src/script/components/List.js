@@ -1,24 +1,25 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Input from "./Input";
+import TodoStore from "../stores/TodoStore";
+import * as TodoActions from "../actions/TodoActions";
 
 class List extends Component {
 
   constructor() {
     super();
     this.state = {
-      lists:[],
+      lists:TodoStore.getTodos(),
       checked:[]
     };
-    this.readList();
   }
 
-  readList() {
-    var numrows = 10;
-    for (var i = 0; i < numrows; i++) {
-        this.state.lists.push("yo");
-        this.state.checked.push(false);
-    }
+  componentWillMount(){
+    TodoStore.on("create", ()=> {
+      this.setState({
+        lists: TodoStore.getTodos()
+      });
+    });
   }
 
   editList(editText){
@@ -32,15 +33,20 @@ class List extends Component {
     );
   }
 
+  createTodo(){
+    TodoActions.createTodo(Date.now());
+  }
+
   render() {
     return (
         <div>
+          <button onClick = {this.createTodo.bind(this)} >Create!</button>
           <Input editList = {this.editList.bind(this)}/>
           <ul lists={this.state.lists}>
             {
               this.state.lists.map(
-                function(value, i){
-                  return <li key={i}>{this.state.lists[i]}</li>
+                function(todo){
+                  return <li key={todo.id}>{todo.title}</li>
                 }.bind(this)
               )
             }
