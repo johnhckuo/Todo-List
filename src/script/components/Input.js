@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import * as TodoActions from "../actions/TodoActions";
+import { Button } from 'reactstrap';
 
 class Input extends Component {
 
@@ -26,8 +27,8 @@ class Input extends Component {
 
   render() {
     return (
-        <div>
-          <button onClick = {this.createTodo.bind(this)} >Create!</button>
+        <div class="input_field">
+          <Button color="danger" onClick = {this.createTodo.bind(this)} >Create!</Button>
           <input onChange={this.handleChange.bind(this)} />
         </div>
     );

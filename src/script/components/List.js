@@ -16,17 +16,20 @@ class List extends Component {
   }
 
   componentWillMount(){
-    TodoStore.on("create", ()=> {
-      this.setState({
-        lists: TodoStore.getTodos()
-      });
-    });
+    TodoStore.on("create", this.getStoreData.bind(this));
+    TodoStore.on("edit", this.getStoreData.bind(this));
+  }
 
-    TodoStore.on("edit", ()=>{
-      this.setState({
-        lists: TodoStore.getTodos()
-      });
-    })
+  //prevent memory leak results from event binding
+  componentWillUnmount(){
+    TodoStore.removeListener("create", this.getStoreData.bind(this));
+    TodoStore.removeListener("edit", this.getStoreData.bind(this));
+  }
+
+  getStoreData(){
+    this.setState({
+      lists: TodoStore.getTodos()
+    });
   }
 
   editHandler(event){
@@ -52,7 +55,7 @@ class List extends Component {
 
   render() {
     return (
-        <div>
+        <div class="list_container">
           <ul>
             {
               this.state.lists.map(
