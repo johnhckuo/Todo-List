@@ -25,8 +25,20 @@ class TodoStore extends EventEmitter{
 		return this.todos;
 	}
 
+
+	yyyymmdd() {
+		var mm = this.getMonth() + 1; // getMonth() is zero-based
+		var dd = this.getDate();
+
+		return [this.getFullYear(),
+		        (mm>9 ? '' : '0') + mm,
+		        (dd>9 ? '' : '0') + dd
+		       ].join('');
+	};
+
 	createTodo(title){
-		const id = Date.now();
+		var id = new Date();
+		id = id.yymmdd();
 		this.todos.push({
 			id,
 			title,

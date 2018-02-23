@@ -27,7 +27,7 @@ class Input extends Component {
 
   render() {
     return (
-        <div class="input_field">
+        <div className="input_field">
           <Button color="danger" onClick = {this.createTodo.bind(this)} >Create!</Button>
           <input onChange={this.handleChange.bind(this)} />
         </div>
