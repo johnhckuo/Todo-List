@@ -21,3 +21,10 @@ export function editTodo(id, title){
 		title
 	});
 }
+
+export function editTodoStatus(id){
+	dispatcher.dispatch({
+		type: "STATUS_COMPLETE",
+		id
+	})
+}

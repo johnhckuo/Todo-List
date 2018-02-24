@@ -9,13 +9,15 @@ class TodoStore extends EventEmitter{
 				id: 1,
 				title: "Hello",
 				complete: true,
-				edit: false
+				edit: false,
+				date: "2018.4.22"
 			},
 			{
 				id: 2,
 				title: "World",
 				complete: false,
-				edit: false
+				edit: false,
+				date: "2018.4.23"
 			}
 		];
 
@@ -25,24 +27,43 @@ class TodoStore extends EventEmitter{
 		return this.todos;
 	}
 
+	yyyymmddhhmmss() {
+		var date = new Date();
 
-	yyyymmdd() {
-		var mm = this.getMonth() + 1; // getMonth() is zero-based
-		var dd = this.getDate();
+		var mm = date.getMonth() + 1; // getMonth() is zero-based
+		var dd = date.getDate();
+		var hh = date.getHours();
+		var minute = date.getMinutes();
+		var ss = date.getSeconds();
 
-		return [this.getFullYear(),
+		return [date.getFullYear(),
 		        (mm>9 ? '' : '0') + mm,
-		        (dd>9 ? '' : '0') + dd
+		        (dd>9 ? '' : '0') + dd,
+		        (hh>9 ? '' : '0') + hh,
+		        (minute>9 ? '' : '0') + minute,
+		        (ss>9 ? '' : '0') + ss
 		       ].join('');
 	};
 
+	yyyymmdd() {
+		var date = new Date();
+
+		var mm = date.getMonth() + 1; // getMonth() is zero-based
+		var dd = date.getDate();
+
+		return [date.getFullYear(),
+		        (mm>9 ? '' : '0') + mm,
+		        (dd>9 ? '' : '0') + dd
+		       ].join('.');
+	};
+
 	createTodo(title){
-		var id = new Date();
-		id = id.yymmdd();
+		var id = this.yyyymmddhhmmss();
 		this.todos.push({
-			id,
+			id: this.yyyymmddhhmmss(),
 			title,
 			complete:false,
+			date: this.yyyymmdd(),
 			edit:false
 		});
 		this.emit("create");
@@ -58,7 +79,7 @@ class TodoStore extends EventEmitter{
 				obj.title = title;
 				edit: true;
 			}
-		})
+		});
 		this.emit("edit");
 	}
 
@@ -74,7 +95,19 @@ class TodoStore extends EventEmitter{
 			case "EDIT":
 				this.editTodo(action.id, action.title);
 				break
+			case "STATUS_COMPLETE":
+				this.editTodoStatus(action.id);
+				break;
 		}
+	}
+
+	editTodoStatus(id){
+		this.todos.forEach(function(obj){
+			if(obj.id == id){
+				obj.complete = true;
+			}
+		});
+		this.emit("edit");
 	}
 
 

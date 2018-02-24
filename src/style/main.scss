@@ -29,6 +29,10 @@ body{
 
 }
 
+.complete{
+	display: none;
+}
+
 li {
 	@include flex-center;
 	cursor: pointer;
@@ -41,8 +45,11 @@ li {
 	float:left;
 	margin: $margin;
 	padding: $padding;
-	&:hover{
-		background:red;
+	&:hover {
+		background: red;
+		.complete{
+			display: inline;
+		}
 	}
 
 }

@@ -5,6 +5,7 @@ import * as TodoActions from "../actions/TodoActions";
 import '../lib/fontawesome-all';
 import SweetAlert from 'sweetalert-react';
 import "../../../node_modules/sweetalert/dist/sweetalert.css";
+import { Button } from 'reactstrap';
 
 class List extends Component {
 
@@ -58,6 +59,11 @@ class List extends Component {
     });
   }
 
+  editTodoStatus(event){
+    const id = event.target.parentNode.parentNode.dataset.id;
+    TodoActions.editTodoStatus(id);
+  }
+
   render() {
     return (
         <div className="list_container">
@@ -69,23 +75,27 @@ class List extends Component {
                   if (todo.complete){
                     complete = <i className="fa fa-check" />;
                   }else{
-                    complete = <i className="fa fa-times" />;
+                    complete = <div><i className="fa fa-times" /><Button color="info" className = "complete" onClick = {this.editTodoStatus.bind(this)} >Completed</Button></div>;
                   }
 
                   if (todo.id == this.state.editing){
                     return (
                       <li key = {todo.id} >
-                        {complete}<input value = {todo.title} onChange = {this.editHandler.bind(this) }/>
+                        {complete}
+                        <input value = {todo.title} onChange = {this.editHandler.bind(this) }/>
                         <button onClick = {this.endEditing.bind(this)} >
                           OK
                         </button>
-                      </li>);
+                      </li>
+                      );
                   }else{
                     return (
                       <li key = {todo.id} data-id = {todo.id} onClick = {this.startEditing.bind(this)}>
                         {complete}
-                        {todo.title}
-                        Date: {todo.id}
+                        <br />
+                        <h3>{todo.title}</h3>
+                        <br />
+                        Date: {todo.date}
                         <SweetAlert
                         show={this.state.editing && this.state.finishEditing}
                         title="Confirmed?"
