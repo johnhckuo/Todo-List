@@ -28,3 +28,10 @@ export function editTodoStatus(id){
 		id
 	})
 }
+
+export function updateTodoSettings(settings){
+	dispatcher.dispatch({
+		type: "UPDATE_SETTINGS",
+		settings
+	})
+}

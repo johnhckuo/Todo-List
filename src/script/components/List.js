@@ -71,7 +71,11 @@ class List extends Component {
             {
               this.state.lists.map(
                 function(todo){
+                  if (todo.visible == false){
+                    return;
+                  }
                   var complete;
+
                   if (todo.complete){
                     complete = <i className="fa fa-check" />;
                   }else{

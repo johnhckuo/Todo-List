@@ -10,14 +10,16 @@ class TodoStore extends EventEmitter{
 				title: "Hello",
 				complete: true,
 				edit: false,
-				date: "2018.4.22"
+				date: "2018.4.22",
+				visible: true
 			},
 			{
 				id: 2,
 				title: "World",
 				complete: false,
 				edit: false,
-				date: "2018.4.23"
+				date: "2018.4.23",
+				visible: true
 			}
 		];
 
@@ -98,6 +100,9 @@ class TodoStore extends EventEmitter{
 			case "STATUS_COMPLETE":
 				this.editTodoStatus(action.id);
 				break;
+			case "UPDATE_SETTINGS":
+				this.updateTodoSettings(action.settings);
+				break;
 		}
 	}
 
@@ -105,6 +110,18 @@ class TodoStore extends EventEmitter{
 		this.todos.forEach(function(obj){
 			if(obj.id == id){
 				obj.complete = true;
+			}
+		});
+		this.emit("edit");
+	}
+
+	updateTodoSettings(settings){
+		const showComplete = settings == "COMPLETE" ? true : false;
+		this.todos.forEach(function(obj){
+			if (obj.complete == showComplete){
+				obj.visible = true;
+			}else{
+				obj.visible = false;
 			}
 		});
 		this.emit("edit");
