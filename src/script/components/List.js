@@ -64,55 +64,56 @@ class List extends Component {
     TodoActions.editTodoStatus(id);
   }
 
+  renderList(){
+    return this.state.lists.map(
+      (todo, key) => {
+
+        if (todo.visible == false){
+          return;
+        }
+
+        var complete;
+        if (todo.complete){
+          complete = <Button color="info"><i className="fa fa-check" /></Button>;
+        }else{
+          complete = <Button color="danger" onClick = {this.editTodoStatus.bind(this)} ><i className="fa fa-times" /></Button>;
+        }
+
+        if (todo.id == this.state.editing){
+          return (
+            <li className = "editing" key = {todo.id} >
+              {complete}
+              <input value = {todo.title} onChange = {this.editHandler.bind(this) }/>
+              <button onClick = {this.endEditing.bind(this)} >
+                OK
+              </button>
+            </li>
+            );
+        }else{
+          return (
+            <li className = "edited" key = {todo.id} data-id = {todo.id} onClick = {this.startEditing.bind(this)}>
+              {complete}
+              <br />
+              <h3>{todo.title}</h3>
+              <br />
+              Date: {todo.date}
+              <SweetAlert
+              show={this.state.editing && this.state.finishEditing}
+              title="Confirmed?"
+              text= {todo.title}
+              onConfirm={() => this.setState({ finishEditing: false })}
+            />
+            </li>);
+        }
+      }
+    )
+  }
+
   render() {
     return (
         <div className="list_container">
           <ul>
-            {
-              this.state.lists.map(
-                function(todo, key){
-
-                  if (todo.visible == false){
-                    return;
-                  }
-
-                  var complete;
-                  if (todo.complete){
-                    complete = <Button color="info"><i className="fa fa-check" /></Button>;
-                  }else{
-                    complete = <Button color="danger" onClick = {this.editTodoStatus.bind(this)} ><i className="fa fa-times" /></Button>;
-                  }
-
-                  if (todo.id == this.state.editing){
-                    return (
-                      <li className = "editing" key = {todo.id} >
-                        {complete}
-                        <input value = {todo.title} onChange = {this.editHandler.bind(this) }/>
-                        <button onClick = {this.endEditing.bind(this)} >
-                          OK
-                        </button>
-                      </li>
-                      );
-                  }else{
-                    return (
-                      <li className = "edited" key = {todo.id} data-id = {todo.id} onClick = {this.startEditing.bind(this)}>
-                        {complete}
-                        <br />
-                        <h3>{todo.title}</h3>
-                        <br />
-                        Date: {todo.date}
-                        <SweetAlert
-                        show={this.state.editing && this.state.finishEditing}
-                        title="Confirmed?"
-                        text= {todo.title}
-                        onConfirm={() => this.setState({ finishEditing: false })}
-                      />
-                      </li>);
-                  }
-
-                }.bind(this)
-              )
-            }
+            { this.renderList()}
           </ul>
         </div>
     );
