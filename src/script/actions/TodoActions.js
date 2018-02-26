@@ -29,9 +29,10 @@ export function editTodoStatus(id){
 	})
 }
 
-export function updateTodoSettings(settings){
+export function updateTodoSettings(settings1, settings2){
 	dispatcher.dispatch({
 		type: "UPDATE_SETTINGS",
-		settings
+		settings1,
+		settings2
 	})
 }

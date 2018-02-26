@@ -28,8 +28,8 @@ class Input extends Component {
   render() {
     return (
         <div className="input_field">
-          <Button color="danger" onClick = {this.createTodo.bind(this)} >Create!</Button>
-          <input onChange={this.handleChange.bind(this)} />
+          New Todo: <input onChange={this.handleChange.bind(this)} />
+          <Button color="primary" onClick = {this.createTodo.bind(this)} >Create!</Button>
         </div>
     );
   }

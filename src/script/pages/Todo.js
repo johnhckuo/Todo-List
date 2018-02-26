@@ -13,8 +13,11 @@ class Todo extends Component {
   render() {
     return (
       <div id="container">
-        <Input />
-        <Settings />
+        <h1 className="logo">Todo-List</h1>
+        <div className="control_field">
+          <Input />
+          <Settings />
+        </div>
         <List />
       </div>
     );

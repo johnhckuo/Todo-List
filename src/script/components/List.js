@@ -60,7 +60,7 @@ class List extends Component {
   }
 
   editTodoStatus(event){
-    const id = event.target.parentNode.parentNode.dataset.id;
+    const id = event.target.parentNode.dataset.id;
     TodoActions.editTodoStatus(id);
   }
 
@@ -70,21 +70,22 @@ class List extends Component {
           <ul>
             {
               this.state.lists.map(
-                function(todo){
+                function(todo, key){
+
                   if (todo.visible == false){
                     return;
                   }
-                  var complete;
 
+                  var complete;
                   if (todo.complete){
-                    complete = <i className="fa fa-check" />;
+                    complete = <Button color="info"><i className="fa fa-check" /></Button>;
                   }else{
-                    complete = <div><i className="fa fa-times" /><Button color="info" className = "complete" onClick = {this.editTodoStatus.bind(this)} >Completed</Button></div>;
+                    complete = <Button color="danger" onClick = {this.editTodoStatus.bind(this)} ><i className="fa fa-times" /></Button>;
                   }
 
                   if (todo.id == this.state.editing){
                     return (
-                      <li key = {todo.id} >
+                      <li className = "editing" key = {todo.id} >
                         {complete}
                         <input value = {todo.title} onChange = {this.editHandler.bind(this) }/>
                         <button onClick = {this.endEditing.bind(this)} >
@@ -94,7 +95,7 @@ class List extends Component {
                       );
                   }else{
                     return (
-                      <li key = {todo.id} data-id = {todo.id} onClick = {this.startEditing.bind(this)}>
+                      <li className = "edited" key = {todo.id} data-id = {todo.id} onClick = {this.startEditing.bind(this)}>
                         {complete}
                         <br />
                         <h3>{todo.title}</h3>

@@ -4,22 +4,34 @@ import dispatcher from "../dispatcher";
 class TodoStore extends EventEmitter{
 	constructor(){
 		super();
+		this.complete_visibility = true;
+		this.incomplete_visibility = true;
+		this.key = 0;
+
 		this.todos = [
 			{
-				id: 1,
+				id: this.key++,
 				title: "Hello",
 				complete: true,
 				edit: false,
 				date: "2018.4.22",
-				visible: true
+				visible: this.complete_visibility
 			},
 			{
-				id: 2,
+				id: this.key++,
+				title: "React",
+				complete: true,
+				edit: false,
+				date: "2018.4.23",
+				visible: this.complete_visibility
+			},
+			{
+				id: this.key++,
 				title: "World",
 				complete: false,
 				edit: false,
-				date: "2018.4.23",
-				visible: true
+				date: "2018.4.24",
+				visible: this.incomplete_visibility
 			}
 		];
 
@@ -28,24 +40,6 @@ class TodoStore extends EventEmitter{
 	getTodos(){
 		return this.todos;
 	}
-
-	yyyymmddhhmmss() {
-		var date = new Date();
-
-		var mm = date.getMonth() + 1; // getMonth() is zero-based
-		var dd = date.getDate();
-		var hh = date.getHours();
-		var minute = date.getMinutes();
-		var ss = date.getSeconds();
-
-		return [date.getFullYear(),
-		        (mm>9 ? '' : '0') + mm,
-		        (dd>9 ? '' : '0') + dd,
-		        (hh>9 ? '' : '0') + hh,
-		        (minute>9 ? '' : '0') + minute,
-		        (ss>9 ? '' : '0') + ss
-		       ].join('');
-	};
 
 	yyyymmdd() {
 		var date = new Date();
@@ -60,13 +54,14 @@ class TodoStore extends EventEmitter{
 	};
 
 	createTodo(title){
-		var id = this.yyyymmddhhmmss();
+		var id = this.key++;
 		this.todos.push({
-			id: this.yyyymmddhhmmss(),
+			id,
 			title,
 			complete:false,
 			date: this.yyyymmdd(),
-			edit:false
+			edit:false,
+			visible:this.incomplete_visibility
 		});
 		this.emit("create");
 	}
@@ -86,7 +81,7 @@ class TodoStore extends EventEmitter{
 	}
 
 	handleActions(action){
-		console.log("action received: ", action);
+		// console.log("action received: ", action);
 		switch (action.type){
 			case "CREATE":
 				this.createTodo(action.title);
@@ -101,7 +96,7 @@ class TodoStore extends EventEmitter{
 				this.editTodoStatus(action.id);
 				break;
 			case "UPDATE_SETTINGS":
-				this.updateTodoSettings(action.settings);
+				this.updateTodoSettings(action.settings1, action.settings2);
 				break;
 		}
 	}
@@ -115,13 +110,15 @@ class TodoStore extends EventEmitter{
 		this.emit("edit");
 	}
 
-	updateTodoSettings(settings){
-		const showComplete = settings == "COMPLETE" ? true : false;
+	updateTodoSettings(settings1, settings2){
+
+		this.complete_visibility = settings1;
+		this.incomplete_visibility = settings2;
 		this.todos.forEach(function(obj){
-			if (obj.complete == showComplete){
-				obj.visible = true;
+			if (obj.complete == true){
+				obj.visible = settings1;
 			}else{
-				obj.visible = false;
+				obj.visible = settings2;
 			}
 		});
 		this.emit("edit");

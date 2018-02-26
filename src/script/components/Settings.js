@@ -8,7 +8,8 @@ class Settings extends Component {
   constructor() {
     super();
     this.state = {
-      showComplete: false
+      showComplete: true,
+      showIncomplete: true
     };
   }
 
@@ -16,13 +17,17 @@ class Settings extends Component {
     this.setState({
       showComplete : !this.state.showComplete
     }, ()=>{
-      if (this.state.showComplete){
-        TodoActions.updateTodoSettings("COMPLETE");
-      }else{
-        TodoActions.updateTodoSettings("INCOMPLETE");
-      }
+      TodoActions.updateTodoSettings(this.state.showComplete, this.state.showIncomplete);
     });
 
+  }
+
+  showIncomplete(event){
+    this.setState({
+      showIncomplete : !this.state.showIncomplete
+    }, ()=>{
+      TodoActions.updateTodoSettings(this.state.showComplete, this.state.showIncomplete);
+    });
   }
 
   render() {
@@ -33,6 +38,13 @@ class Settings extends Component {
             type="checkbox"
             checked={this.state.showComplete}
             onChange={this.showComplete.bind(this)} />
+            |
+          Show Incomplete<input
+            name="showIncomplete"
+            type="checkbox"
+            checked={this.state.showIncomplete}
+            onChange={this.showIncomplete.bind(this)} />
+            
         </div>
     );
   }
