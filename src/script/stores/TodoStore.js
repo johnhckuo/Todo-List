@@ -11,26 +11,26 @@ class TodoStore extends EventEmitter{
 		this.todos = [
 			{
 				id: this.key++,
-				title: "Hello",
+				title: "Buy Egg",
 				complete: true,
 				edit: false,
-				date: "2018.4.22",
+				date: "2017.4.22",
 				visible: this.complete_visibility
 			},
 			{
 				id: this.key++,
-				title: "React",
+				title: "Learn React",
 				complete: true,
 				edit: false,
-				date: "2018.4.23",
+				date: "2018.7.23",
 				visible: this.complete_visibility
 			},
 			{
 				id: this.key++,
-				title: "World",
+				title: "Get A Job",
 				complete: false,
 				edit: false,
-				date: "2018.4.24",
+				date: "2019.10.24",
 				visible: this.incomplete_visibility
 			}
 		];

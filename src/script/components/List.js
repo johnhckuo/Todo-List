@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import TodoStore from "../stores/TodoStore";
 import * as TodoActions from "../actions/TodoActions";
-import '../lib/fontawesome-all';
 import SweetAlert from 'sweetalert-react';
 import "../../../node_modules/sweetalert/dist/sweetalert.css";
 import { Button } from 'reactstrap';
@@ -74,9 +73,9 @@ class List extends Component {
 
         var complete;
         if (todo.complete){
-          complete = <Button color="info"><i className="fa fa-check" /></Button>;
+          complete = <Button color="info">✓</Button>;
         }else{
-          complete = <Button color="danger" onClick = {this.editTodoStatus.bind(this)} ><i className="fa fa-times" /></Button>;
+          complete = <Button color="danger" onClick = {this.editTodoStatus.bind(this)} >✗</Button>;
         }
 
         if (todo.id == this.state.editing){
