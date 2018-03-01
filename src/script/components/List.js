@@ -22,12 +22,16 @@ class List extends Component {
   componentWillMount(){
     TodoStore.on("create", this.getStoreData.bind(this));
     TodoStore.on("edit", this.getStoreData.bind(this));
+    TodoStore.on("delete", this.getStoreData.bind(this));
+
   }
 
   //prevent memory leak results from event binding
   componentWillUnmount(){
     TodoStore.removeListener("create", this.getStoreData.bind(this));
     TodoStore.removeListener("edit", this.getStoreData.bind(this));
+    TodoStore.removeListener("delete", this.getStoreData.bind(this));
+
   }
 
   getStoreData(){
@@ -63,6 +67,12 @@ class List extends Component {
     TodoActions.editTodoStatus(id);
   }
 
+  deleteTodo(event){
+    console.log(event.target.parentNode.dataset.id)
+    const id = event.target.parentNode.dataset.id;
+    TodoActions.deleteTodo(id);
+  }
+
   renderList(){
     return this.state.lists.map(
       (todo, key) => {
@@ -80,9 +90,12 @@ class List extends Component {
 
         if (todo.id == this.state.editing){
           return (
-            <li className = "editing" key = {todo.id} >
+            <li className = "editing" key = {todo.id} data-id = {todo.id}>
               {complete}
               <input value = {todo.title} onChange = {this.editHandler.bind(this) }/>
+              <button onClick = {this.deleteTodo.bind(this)} >
+                DELETE
+              </button>
               <button onClick = {this.endEditing.bind(this)} >
                 OK
               </button>

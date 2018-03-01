@@ -67,7 +67,14 @@ class TodoStore extends EventEmitter{
 	}
 
 	deleteTodo(id){
-
+		var index;
+		for (var i = 0 ; i < this.todos.length ; i++){
+			if (this.todos[i].id == id){
+				this.todos.splice(i, 1);
+				break;
+			}
+		}
+		this.emit("delete");
 	}
 
 	editTodo(id, title){
