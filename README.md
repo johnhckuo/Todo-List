@@ -14,3 +14,7 @@ npm install
 npm run dev
 
 ```
+## Powered by
+- [GitHub Pages](https://pages.github.com/)
+- [Reactjs](https://reactjs.org/)
+- [Sweet Alert](https://sweetalert.js.org/)
