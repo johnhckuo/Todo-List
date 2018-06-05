@@ -11,27 +11,24 @@ export default class Header extends Component {
       showComplete: true,
       showIncomplete: true
     };
-    this.showIncomplete = this.showIncomplete.bind(this);
-    this.showComplete = this.showComplete.bind(this);
+    this.toggleIncomplete = this.toggleIncomplete.bind(this);
+    this.toggleComplete = this.toggleComplete.bind(this);
   }
 
-  showComplete(){
-    this.setState((prevState)=>{
-      return {showComplete: !prevState.showComplete};
-    })
+  toggleComplete(){
+    this.props.toggleComplete();
   }
 
-  showIncomplete(){
-    this.setState((prevState)=>{
-      return {showIncomplete: !prevState.showIncomplete};
-    })
+  toggleIncomplete(){
+    this.props.toggleIncomplete();
   }
 
   render() {
+    const {complete_visibility, incomplete_visibility} = this.props;
     return (
         <Style.Container>
-          <Style.Button active={this.state.showComplete} onClick={this.showComplete} >show complete</Style.Button>
-          <Style.Button active={this.state.showIncomplete} onClick={this.showIncomplete} >show complete</Style.Button>
+          <Style.Button active={complete_visibility} onClick={this.toggleComplete} >show complete</Style.Button>
+          <Style.Button active={incomplete_visibility} onClick={this.toggleIncomplete} >show Incomplete</Style.Button>
         </Style.Container>
     );
   }

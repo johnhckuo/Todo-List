@@ -7,31 +7,38 @@ import Header from "../components/header/main";
 class Todo extends Component {
   constructor() {
     super();
-    this.state = {todos:[]};
+    this.state = {
+      todos:[],
+      incomplete_visibility: true,
+      complete_visibility: true
+    };
     this.key = 0;
     this.createTodo = this.createTodo.bind(this);
     this.yyyymmdd = this.yyyymmdd.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
+    this.editTodoStatus = this.editTodoStatus.bind(this);
+    this.editTodo = this.editTodo.bind(this);
+    this.toggleComplete = this.toggleComplete.bind(this);
+    this.toggleIncomplete = this.toggleIncomplete.bind(this);
   }
 
   createTodo(title){
     var id = this.key++;
     this.setState((prevState)=>{
-      var newTodos = Object.assign({}, this.prevState.todos);
+      var newTodos = Object.assign({}, prevState.todos);
       newTodos[id] = {
         id,
   			title,
   			complete:false,
   			date: this.yyyymmdd(),
   			edit:false,
-  			visible:this.incomplete_visibility
+  			visible:this.state.incomplete_visibility
       };
       return {todos: newTodos};
     })
   }
 
   deleteTodo(id){
-    var keys = Object.keys(this.state.todos);
     if (typeof this.state.todos[id] != "undefined"){
       this.setState((prevState)=>{
         var newTodos = Object.assign({}, prevState.todos);
@@ -39,6 +46,39 @@ class Todo extends Component {
         return {todos: newTodos};
       })
     }
+  }
+
+  editTodo(id, title){
+    if (typeof this.state.todos[id] != "undefined"){
+      this.setState((prevState)=>{
+        var newTodos = Object.assign({}, prevState.todos);
+        newTodos[id].title = title;
+        newTodos[id].edit = true;
+        return {todos: newTodos};
+      })
+    }
+  }
+
+  editTodoStatus(id){
+    if (typeof this.state.todos[id] != "undefined"){
+      this.setState((prevState)=>{
+        var newTodos = Object.assign({}, prevState.todos);
+        newTodos[id].complete = true;
+        return {todos: newTodos};
+      })
+    }
+  }
+
+  toggleComplete(){
+    this.setState((prevState)=>{
+      return {complete_visibility: !prevState.complete_visibility};
+    })
+  }
+
+  toggleIncomplete(){
+    this.setState((prevState)=>{
+      return {incomplete_visibility: !prevState.incomplete_visibility};
+    })
   }
 
   yyyymmdd() {
@@ -57,11 +97,9 @@ class Todo extends Component {
   render() {
     return (
       <div id="container">
-        <Header />
-        <div className="control_field">
-          <Input createTodo={this.createTodo}/>
-        </div>
-        <Content deleteTodo={this.deleteTodo}/>
+        <Header toggleComplete={this.toggleComplete} toggleIncomplete={this.toggleIncomplete} complete_visibility={this.state.complete_visibility} incomplete_visibility={this.state.incomplete_visibility}/>
+        <Input createTodo={this.createTodo}/>
+        <Content deleteTodo={this.deleteTodo} editTodoStatus={this.editTodoStatus} editTodo={this.editTodo} todos={this.state.todos}/>
       </div>
     );
   }

@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import TodoStore from "../../stores/TodoStore";
-import * as TodoActions from "../../actions/TodoActions";
-import SweetAlert from 'sweetalert-react';
 import { Button } from 'reactstrap';
 
 export default class Content extends Component {
@@ -10,7 +7,6 @@ export default class Content extends Component {
   constructor() {
     super();
     this.state = {
-      lists:TodoStore.getTodos(),
       currentTitle: "",
       currentId: "",
       editing: -1,
@@ -18,32 +14,11 @@ export default class Content extends Component {
     };
   }
 
-  componentWillMount(){
-    TodoStore.on("create", this.getStoreData.bind(this));
-    TodoStore.on("edit", this.getStoreData.bind(this));
-    TodoStore.on("delete", this.getStoreData.bind(this));
-
-  }
-
-  //prevent memory leak results from event binding
-  componentWillUnmount(){
-    TodoStore.removeListener("create", this.getStoreData.bind(this));
-    TodoStore.removeListener("edit", this.getStoreData.bind(this));
-    TodoStore.removeListener("delete", this.getStoreData.bind(this));
-
-  }
-
-  getStoreData(){
-    this.setState({
-      lists: TodoStore.getTodos()
-    });
-  }
-
   editHandler(event){
     this.setState({
       currentTitle: event.target.value
     }, () => {
-      TodoActions.editTodo(this.state.currentId, this.state.currentTitle);
+      this.props.editTodo(this.state.currentId, this.state.currentTitle);
     });
   }
 
@@ -63,35 +38,36 @@ export default class Content extends Component {
 
   editTodoStatus(event){
     const id = event.target.parentNode.dataset.id;
-    TodoActions.editTodoStatus(id);
+    this.props.editTodoStatus(id);
   }
 
   deleteTodo(event){
     const id = event.target.parentNode.dataset.id;
-    //TodoActions.deleteTodo(id);
     this.props.deleteTodo(id);
   }
 
   renderList(){
-    return this.state.lists.map(
-      (todo, key) => {
+    const {todos} = this.props;
+    var ids = Object.keys(todos);
+    return ids.map(
+      (id) => {
 
-        if (todo.visible == false){
+        if (todos[id].visible == false){
           return;
         }
 
         var complete;
-        if (todo.complete){
+        if (todos[id].complete){
           complete = <Button color="info">✓</Button>;
         }else{
           complete = <Button color="danger" onClick = {this.editTodoStatus.bind(this)} >✗</Button>;
         }
 
-        if (todo.id == this.state.editing){
+        if (id == this.state.editing){
           return (
-            <li className = "editing" key = {todo.id} data-id = {todo.id}>
+            <li className = "editing" key = {id} data-id = {todos[id].id}>
               {complete}
-              <input value = {todo.title} onChange = {this.editHandler.bind(this) }/>
+              <input value = {todos[id].title} onChange = {this.editHandler.bind(this) }/>
               <button onClick = {this.deleteTodo.bind(this)} >
                 DELETE
               </button>
@@ -102,18 +78,12 @@ export default class Content extends Component {
             );
         }else{
           return (
-            <li className = "edited" key = {todo.id} data-id = {todo.id} onClick = {this.startEditing.bind(this)}>
+            <li className = "edited" key = {id} data-id = {todos[id].id} onClick = {this.startEditing.bind(this)}>
               {complete}
               <br />
-              <h3>{todo.title}</h3>
+              <h3>{todos[id].title}</h3>
               <br />
-              Date: {todo.date}
-              <SweetAlert
-              show={this.state.editing && this.state.finishEditing}
-              title="Confirmed?"
-              text= {todo.title}
-              onConfirm={() => this.setState({ finishEditing: false })}
-            />
+              Date: {todos[id].date}
             </li>);
         }
       }
