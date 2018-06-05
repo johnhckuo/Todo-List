@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import TodoStore from "../stores/TodoStore";
-import * as TodoActions from "../actions/TodoActions";
+import TodoStore from "../../stores/TodoStore";
+import * as TodoActions from "../../actions/TodoActions";
 import SweetAlert from 'sweetalert-react';
-import "../../../node_modules/sweetalert/dist/sweetalert.css";
 import { Button } from 'reactstrap';
 
-class List extends Component {
+export default class Content extends Component {
 
   constructor() {
     super();
@@ -68,9 +67,9 @@ class List extends Component {
   }
 
   deleteTodo(event){
-    console.log(event.target.parentNode.dataset.id)
     const id = event.target.parentNode.dataset.id;
-    TodoActions.deleteTodo(id);
+    //TodoActions.deleteTodo(id);
+    this.props.deleteTodo(id);
   }
 
   renderList(){
@@ -131,4 +130,3 @@ class List extends Component {
     );
   }
 }
-export default List;

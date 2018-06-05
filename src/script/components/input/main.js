@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import * as TodoActions from "../actions/TodoActions";
 import { Button } from 'reactstrap';
+import * as Style from "./style";
 
-class Input extends Component {
+export default class Input extends Component {
 
   constructor() {
     super();
@@ -18,11 +18,10 @@ class Input extends Component {
     this.setState({
       newTitle: event.target.value,
     });
-
   }
 
   createTodo(){
-    TodoActions.createTodo(this.state.newTitle);
+    this.props.createTodo(this.state.newTitle);
   }
 
   render() {
@@ -34,4 +33,3 @@ class Input extends Component {
     );
   }
 }
-export default Input;
